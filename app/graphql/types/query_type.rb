@@ -9,5 +9,17 @@ module Types
     def test_field
       "Hello World!"
     end
+
+    field :login, String, null:true, 
+    description: 'Login an user' do
+      argument :email, String, required: true
+      argument :password, String, required: true
+    end
+    def login(email:, password:)
+      if user = User.where(email: email).first&.authenticate(password)
+        user.sessions.create.key
+      end
+    end
+
   end
 end
